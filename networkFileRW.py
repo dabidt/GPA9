@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
 #networkFileRW.py
-#Pamela Brauda
-#Thursday, March 3, 2022
+#Dawit Dabi
+#8/5/2023
 #Update routers and switches;
 #read equipment from a file, write updates & errors to file
 
 ##---->>>> Use a try/except clause to import the JSON module
-
+try:
+    import json
+except:
+    print('Error importing JSON')
 
 
 ##---->>>> Create file constants for the file names; file constants can be reused
 ##         There are 2 files to read this program: equip_r.txt and equip_s.txt
 ##         There are 2 files to write in this program: updated.txt and errors.txt
-      
-
-
-
+FILENAME = 'equip_r.txt' 
+FILENAME2 = 'equip_s.txt'
+FILENAME3 = 'updated.txt'
+FILENAME4 = 'invalid.txt'
 
 #prompt constants
 UPDATE = "\nWhich device would you like to update "
@@ -60,7 +63,17 @@ def getValidIP(invalidIPCount, invalidIPAddresses):
 def main():
 
     ##---->>>> open files here
+    with open(FILENAME) as f:
+        rcontents = f.read()
+        #print(rcontents)
+    with open(FILENAME2) as g:
+        scontents = g.read()
+    #js = json.loads(rcontents)
+    #print(js)
+    #print(js.values())
 
+    
+        
 
 
     
@@ -68,11 +81,15 @@ def main():
     ##---->>>> read the routers and addresses into the router dictionary
 
     routers = {}
+    routers = json.loads(rcontents)
+    #print(routers)
 
 
     ##---->>>> read the switches and addresses into the switches dictionary
 
     switches = {}
+    switches = json.loads(scontents)
+    #print(switches)
 
 
     #the updated dictionary holds the device name and new ip address
@@ -131,14 +148,16 @@ def main():
     print("Number of devices updated:", devicesUpdatedCount)
 
     ##---->>>> write the updated equipment dictionary to a file
-
+    with open(FILENAME3, 'w') as h:
+        json.dump(updated, h)
     
     print("Updated equipment written to file 'updated.txt'")
     print()
     print("\nNumber of invalid addresses attempted:", invalidIPCount)
 
     ##---->>>> write the list of invalid addresses to a file
-    
+    with open(FILENAME4, 'w') as i:
+        json.dump(invalidIPAddresses, i)
 
     print("List of invalid addresses written to file 'errors.txt'")
 
